@@ -2,7 +2,10 @@
 $localFolders = [];
 $localDomains = [];
 
-foreach(new DirectoryIterator('../') as $fileInfo)
+$serverRoot = '/home/elkuku/srv/htdocs';
+$hostsFile = '/etc/hosts';
+
+foreach(new DirectoryIterator($serverRoot) as $fileInfo)
 {
     if ($fileInfo->isDir() && !$fileInfo->isDot() && !in_array($fileInfo->getFilename(), ['index', '.idea']))
     {
@@ -12,7 +15,7 @@ foreach(new DirectoryIterator('../') as $fileInfo)
 
 sort($localFolders);
 
-$lines = file('/etc/hosts');
+$lines = file($hostsFile);
 
 foreach ($lines as $line)
 {
@@ -125,11 +128,11 @@ sort($localDomains);
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>El KuKu <small>local</small></h1>
-                    <div class="alert alert-dismissable alert-warning">
+                    <div class="alert alert-dismissable alert-warning pull-right">
                         <button data-dismiss="alert" class="close" type="button">&times;</button>
                         This is a local host!
                     </div>
+                    <h1>El KuKu <small>local</small></h1>
                 </div>
             </div>
             <div class="row">
@@ -139,6 +142,7 @@ sort($localDomains);
                             <h3 class="panel-title">Local folders</h3>
                         </div>
                         <div class="panel-body">
+			    <p><code><?= $serverRoot ?></code></p>
                             <ul>
                             <?php foreach($localFolders as $folder): ?>
                             <?= '<li class="list-unstyled"><a href="../' . $folder . '">' . $folder . '</a></li>' ?>
@@ -153,6 +157,7 @@ sort($localDomains);
                             <h3 class="panel-title">Local Domains</h3>
                         </div>
                         <div class="panel-body">
+                            <p><code><?= $hostsFile ?></code></p>
                             <ul>
                                 <?php foreach($localDomains as $folder): ?>
                                     <?= '<li class="list-unstyled"><a href="http://' . $folder . '">' . $folder . '</a></li>' ?>
